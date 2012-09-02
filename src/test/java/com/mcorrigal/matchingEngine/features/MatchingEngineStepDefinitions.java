@@ -31,7 +31,7 @@ public class MatchingEngineStepDefinitions {
 	
 	
 	@Given("^a matching engine with an empty order book$")
-	public void an_empty_order_book() throws Throwable {
+	public void anEmptyOrderBook() throws Throwable {
 		bids = OrderBookSideFactory.newBidOrderBookSide();
 		asks = OrderBookSideFactory.newAskOrderBookSide();
 		orderBook = new OrderBook(bids, asks);
@@ -39,20 +39,20 @@ public class MatchingEngineStepDefinitions {
 	}
 
 	@When("^the matching engine receives a limit (" + FREE_TEXT + ") order$")
-	public void the_matching_engine_receives_a_limit_buy_order(String orderSide) throws Throwable {
+	public void receiveLimitOrder(String orderSide) throws Throwable {
 		Order order = OrderFactory.newLimit(DUMMY_ORDER_ID, orderSide, DUMMY_PRICE);
 		matchingEngine.newOrder(order);
 	}
 	
 	@When("^the matching engine receives the following limit orders:$")
-	public void the_matching_engine_receives_the_following_limit_buy_orders(List<SpecifiedOrder> specifiedOrders) {
+	public void receiveLimitOrders(List<SpecifiedOrder> specifiedOrders) {
 		for (SpecifiedOrder specifiedOrder : specifiedOrders) {
 			matchingEngine.newOrder(specifiedOrder.createOrder());
 		}
 	}
 
 	@Then("^the matching engine rests the order on the (" + FREE_TEXT + ") side of the order book$")
-	public void the_matching_engine_rests_the_order_on_the_bid_side_of_the_order_book(String orderBookSide) throws Throwable {
+	public void orderListOnOrderBookSide(String orderBookSide) throws Throwable {
 	    if (orderBookSide.equalsIgnoreCase("bid")) {
 	    	assertOrderBookSideSizes(1, 0);
 	    } else if (orderBookSide.equalsIgnoreCase("ask")) { 
@@ -63,7 +63,7 @@ public class MatchingEngineStepDefinitions {
 	}
 	
 	@Then("^the (" + FREE_TEXT + ") order book side has rested the orders in the following order:$")
-	public void the_bid_order_book_side_has_rested_the_orders_in_the_following_order(String orderBookSide, List<IdList> specifiedOrderIds) throws Exception {
+	public void ordersListedOnOrderBookSide(String orderBookSide, List<IdList> specifiedOrderIds) throws Exception {
 		List<Order> ordersInOrderBookSide = orderBookSideFor(orderBookSide).getAllOrders();
 		assertThat(specifiedOrderIds.size(), is(ordersInOrderBookSide.size()));
 		for (int i = 0; i < specifiedOrderIds.size(); i++) {
