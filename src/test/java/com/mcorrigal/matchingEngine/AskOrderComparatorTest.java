@@ -1,6 +1,6 @@
 package com.mcorrigal.matchingEngine;
 
-import static com.mcorrigal.matchingEngine.TestConstants.dummyLimitBuyForPrice;
+import static com.mcorrigal.matchingEngine.TestConstants.dummyLimitSellForPrice;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -8,11 +8,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mcorrigal.matchingEngine.order.SellOrder;
+import com.mcorrigal.matchingEngine.orderBook.ask.AskOrderComparator;
+
 public class AskOrderComparatorTest {
 
-	private OrderComparator askOrderComparator;
-	private Order highPricedOrder = dummyLimitBuyForPrice("50");
-	private Order lowPricedOrder = dummyLimitBuyForPrice("40");
+	private AskOrderComparator askOrderComparator;
+	private SellOrder highPricedOrder = dummyLimitSellForPrice("50");
+	private SellOrder lowPricedOrder = dummyLimitSellForPrice("40");
 	
 	@Before
 	public void setUp() {

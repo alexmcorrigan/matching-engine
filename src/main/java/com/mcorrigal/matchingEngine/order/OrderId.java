@@ -1,4 +1,4 @@
-package com.mcorrigal.matchingEngine;
+package com.mcorrigal.matchingEngine.order;
 
 public class OrderId {
 

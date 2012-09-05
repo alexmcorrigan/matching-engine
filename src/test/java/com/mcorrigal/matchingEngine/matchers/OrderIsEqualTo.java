@@ -8,11 +8,12 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import com.mcorrigal.matchingEngine.Order;
-import com.mcorrigal.matchingEngine.Order.OrderSide;
-import com.mcorrigal.matchingEngine.Order.OrderType;
-import com.mcorrigal.matchingEngine.OrderId;
-import com.mcorrigal.matchingEngine.Price;
+import com.mcorrigal.matchingEngine.order.interfaces.Order;
+import com.mcorrigal.matchingEngine.order.interfaces.Order.OrderSide;
+import com.mcorrigal.matchingEngine.order.interfaces.Order.OrderType;
+import com.mcorrigal.matchingEngine.order.OrderId;
+import com.mcorrigal.matchingEngine.order.Price;
+import com.mcorrigal.matchingEngine.order.Quantity;
 
 public class OrderIsEqualTo extends TypeSafeDiagnosingMatcher<Order> {
 	
@@ -21,6 +22,7 @@ public class OrderIsEqualTo extends TypeSafeDiagnosingMatcher<Order> {
 	private Matcher<OrderSide> side;
 	private Matcher<OrderType> type;
 	private Matcher<Price> price;
+	private Matcher<Quantity> quantity;
 	
 	public OrderIsEqualTo(Order expectedOrder) {
 		this.expectedOrder = expectedOrder;
@@ -28,6 +30,7 @@ public class OrderIsEqualTo extends TypeSafeDiagnosingMatcher<Order> {
 		side = is(equalTo(expectedOrder.getSide()));
 		type = is(equalTo(expectedOrder.getType()));
 		price = is(equalTo(expectedOrder.getPrice()));
+		quantity = is(equalTo(expectedOrder.getQuantity()));
 	}
 	
 	@Override
@@ -54,6 +57,11 @@ public class OrderIsEqualTo extends TypeSafeDiagnosingMatcher<Order> {
 			matches = false;
 		}
 		
+		if (!quantity.matches(order.getQuantity())) {
+			reportMismatch("quantity", quantity, order.getQuantity(), mismatchDescription, matches);
+			matches = false;
+		}
+		
 		return matches; 
 	}
 	
@@ -75,6 +83,8 @@ public class OrderIsEqualTo extends TypeSafeDiagnosingMatcher<Order> {
 		.appendValue(expectedOrder.getType())
 		.appendText(", price is ")
 		.appendValue(expectedOrder.getPrice())
+		.appendText(", quantity is ")
+		.appendValue(expectedOrder.getQuantity())
 		.appendText("}");
 	}
 

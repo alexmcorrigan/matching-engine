@@ -1,33 +1,23 @@
 package com.mcorrigal.matchingEngine;
 
-import com.mcorrigal.matchingEngine.Order.OrderSide;
+import com.mcorrigal.matchingEngine.factories.OrderFactory;
+import com.mcorrigal.matchingEngine.order.BuyOrder;
+import com.mcorrigal.matchingEngine.order.SellOrder;
 
 public class TestConstants {
 
 	public static final String DUMMY_ORDER_ID = "100001";
 	public static final String DUMMY_PRICE = "100.99";
-	public static final Order DUMMY_LIMIT_BUY_ORDER = dummyLimitOrder(OrderSide.BUY);
-	public static final Order DUMMY_LIMIT_SELL_ORDER = dummyLimitOrder(OrderSide.SELL);
+	public static final String DUMMY_QUANTITY = "200";
+	public static final BuyOrder DUMMY_LIMIT_BUY_ORDER = dummyLimitBuyForPrice(DUMMY_PRICE);
+	public static final SellOrder DUMMY_LIMIT_SELL_ORDER = dummyLimitSellForPrice(DUMMY_PRICE);
 	
-	private static Order dummyLimitOrder(OrderSide side) {
-		return OrderFactory.newLimit(
-				OrderId.create(DUMMY_ORDER_ID), 
-				side, 
-				Price.create(DUMMY_PRICE));
+	public static BuyOrder dummyLimitBuyForPrice(String price) {
+		return OrderFactory.newLimitBuy(DUMMY_ORDER_ID, price, DUMMY_QUANTITY); 
 	}
 	
-	public static Order dummyLimitBuyForPrice(String price) {
-		return OrderFactory.newLimit(
-				OrderId.create(DUMMY_ORDER_ID), 
-				OrderSide.BUY, 
-				Price.create(price)); 
-	}
-	
-	public static Order dummyLimitSellForPrice(String price) {
-		return OrderFactory.newLimit(
-				OrderId.create(DUMMY_ORDER_ID), 
-				OrderSide.SELL, 
-				Price.create(price)); 
+	public static SellOrder dummyLimitSellForPrice(String price) {
+		return OrderFactory.newLimitSell(DUMMY_ORDER_ID, price, DUMMY_QUANTITY); 
 	}
 	
 }

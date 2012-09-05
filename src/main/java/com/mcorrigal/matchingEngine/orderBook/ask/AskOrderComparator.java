@@ -1,8 +1,13 @@
-package com.mcorrigal.matchingEngine;
+package com.mcorrigal.matchingEngine.orderBook.ask;
+
+import com.mcorrigal.matchingEngine.order.Price;
+import com.mcorrigal.matchingEngine.order.interfaces.Order;
+import com.mcorrigal.matchingEngine.orderBook.interfaces.OrderComparator;
 
 
 public class AskOrderComparator extends OrderComparator {
 
+	@Override
 	public int compare(Order o1, Order o2) {
 		Price p1 = o1.getPrice();
 		Price p2 = o2.getPrice();

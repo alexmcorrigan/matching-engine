@@ -26,3 +26,15 @@ Feature: Buy orders listed in the order book will be ordered first by price, and
 			| 300 |
 			| 400 |
 			| 200 |
+			
+		When the matching engine receives the following limit orders:
+			| id  | side | price |
+			| 500 | BUY  | 20    |
+			
+		Then the bid order book side has rested the orders in the following order:
+			| id  |
+			| 100 |
+			| 300 |
+			| 400 |
+			| 200 |
+			| 500 |

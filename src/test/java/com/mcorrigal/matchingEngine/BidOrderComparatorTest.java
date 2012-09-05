@@ -8,11 +8,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mcorrigal.matchingEngine.order.BuyOrder;
+import com.mcorrigal.matchingEngine.orderBook.bid.BidOrderComparator;
+
 public class BidOrderComparatorTest {
 
-	private OrderComparator bidOrderComparator;
-	private Order highPricedOrder = dummyLimitBuyForPrice("50");
-	private Order lowPricedOrder = dummyLimitBuyForPrice("40");
+	private BidOrderComparator bidOrderComparator;
+	private BuyOrder highPricedOrder = dummyLimitBuyForPrice("50");
+	private BuyOrder lowPricedOrder = dummyLimitBuyForPrice("40");
 	
 	@Before
 	public void setUp() {

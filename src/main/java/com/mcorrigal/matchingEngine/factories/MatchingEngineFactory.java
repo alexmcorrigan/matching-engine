@@ -1,12 +1,11 @@
-package com.mcorrigal.matchingEngine;
+package com.mcorrigal.matchingEngine.factories;
+
+import com.mcorrigal.matchingEngine.MatchingEngine;
 
 public class MatchingEngineFactory {
 
 	public static MatchingEngine newInstance() {
-		OrderBookSide bids = OrderBookSideFactory.newBidOrderBookSide();
-		OrderBookSide asks = OrderBookSideFactory.newAskOrderBookSide();
-		OrderBook orderBook = new OrderBook(bids, asks);
-		return new MatchingEngine(orderBook);
+		return new MatchingEngine(OrderBookFactory.newInstance());
 	}
 	
 }

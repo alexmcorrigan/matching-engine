@@ -1,4 +1,4 @@
-package com.mcorrigal.matchingEngine;
+package com.mcorrigal.matchingEngine.order;
 
 import java.math.BigDecimal;
 

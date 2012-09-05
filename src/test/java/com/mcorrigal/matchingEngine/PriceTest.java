@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 
 import org.junit.Test;
 
+import com.mcorrigal.matchingEngine.order.Price;
+
 public class PriceTest {
 	
 	private Price highPrice = Price.create("20");
