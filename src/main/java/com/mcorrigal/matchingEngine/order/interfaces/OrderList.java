@@ -8,8 +8,8 @@ public interface OrderList {
 	public boolean isEmpty();
 	public int size();
 	public void add(Order order);
-	public void addAll(OrderList orderList);
 	public Order get(int i);
 	public List<Order> getAll();
+    public boolean remove(Order order);
 	
 }

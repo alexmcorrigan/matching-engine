@@ -2,15 +2,15 @@ package com.mcorrigal.matchingEngine.matchers;
 
 import org.hamcrest.Matcher;
 
-import com.mcorrigal.matchingEngine.order.OrderId;
-import com.mcorrigal.matchingEngine.order.Price;
-import com.mcorrigal.matchingEngine.order.Quantity;
 import com.mcorrigal.matchingEngine.order.interfaces.Order;
+import com.mcorrigal.matchingEngine.order.orderProperties.OrderId;
+import com.mcorrigal.matchingEngine.order.orderProperties.Price;
+import com.mcorrigal.matchingEngine.order.orderProperties.Quantity;
 
 public class Matchers {
 
 	public static Matcher<Order> equalTo(Order expectedOrder) {
-		return new OrderIsEqualTo(expectedOrder);
+		return expectedOrder;
 	}
 	
 	public static Matcher<Price> equalTo(Price expectedPrice) {

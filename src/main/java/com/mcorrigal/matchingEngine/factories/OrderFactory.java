@@ -1,13 +1,13 @@
 package com.mcorrigal.matchingEngine.factories;
 
 import com.mcorrigal.matchingEngine.order.BuyOrder;
-import com.mcorrigal.matchingEngine.order.interfaces.Order;
-import com.mcorrigal.matchingEngine.order.interfaces.Order.OrderSide;
-import com.mcorrigal.matchingEngine.order.interfaces.Order.OrderType;
-import com.mcorrigal.matchingEngine.order.OrderId;
-import com.mcorrigal.matchingEngine.order.Price;
-import com.mcorrigal.matchingEngine.order.Quantity;
 import com.mcorrigal.matchingEngine.order.SellOrder;
+import com.mcorrigal.matchingEngine.order.interfaces.Order;
+import com.mcorrigal.matchingEngine.order.orderProperties.OrderId;
+import com.mcorrigal.matchingEngine.order.orderProperties.OrderSide;
+import com.mcorrigal.matchingEngine.order.orderProperties.OrderType;
+import com.mcorrigal.matchingEngine.order.orderProperties.Price;
+import com.mcorrigal.matchingEngine.order.orderProperties.Quantity;
 
 public class OrderFactory {
 	
@@ -35,18 +35,18 @@ public class OrderFactory {
 	
 	public static BuyOrder newLimitBuy(OrderId id, Price price, Quantity quantity) {
 		return new BuyOrder(
-				id, 
-				OrderType.LIMIT, 
+				id,
+                OrderType.LIMIT,
 				price, 
 				quantity);
 	}
 
 	public static SellOrder newLimitSell(OrderId id, Price price, Quantity quantity) {
 		return new SellOrder(
-				id, 
-				OrderType.LIMIT, 
+				id,
+                OrderType.LIMIT,
 				price, 
 				quantity);
 	}
-	
+
 }

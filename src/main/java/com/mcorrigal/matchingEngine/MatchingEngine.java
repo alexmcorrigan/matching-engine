@@ -1,13 +1,12 @@
 package com.mcorrigal.matchingEngine;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
 import com.mcorrigal.matchingEngine.order.interfaces.Order;
 import com.mcorrigal.matchingEngine.orderBook.OrderBookSnapshot;
 import com.mcorrigal.matchingEngine.orderBook.interfaces.OrderBook;
+import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MatchingEngine implements OrderBookSnapshotPublisher {
@@ -22,13 +21,18 @@ public class MatchingEngine implements OrderBookSnapshotPublisher {
 		this.orderBook = orderBook;
 	}
 	
-	public void newOrderRequest(Order order) {
-		LOGGER.info("received new order: " + order);
-		order.work(orderBook);
-		newOrderEvent();
+	public void newOrderRequest(Order newOrder) {
+		LOGGER.info("received new order: " + newOrder);
+        Order matchedOrder = newOrder.findMatch(orderBook);
+        if (matchedOrder == null) {
+            newOrder.work(orderBook);
+		    newOrderEvent();
+        } else {
+            matchedOrder.remove(orderBook);
+        }
 	}
-	
-	private void newOrderEvent() {
+
+    private void newOrderEvent() {
 		publishSnapshot(orderBook.snapshot());
 	}
 	

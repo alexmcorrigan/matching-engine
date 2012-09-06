@@ -1,31 +1,30 @@
 package com.mcorrigal.matchingEngine.features;
 
-import static com.mcorrigal.matchingEngine.TestConstants.DUMMY_ORDER_ID;
-import static com.mcorrigal.matchingEngine.TestConstants.DUMMY_PRICE;
-import static com.mcorrigal.matchingEngine.TestConstants.DUMMY_QUANTITY;
-import static com.mcorrigal.matchingEngine.features.FeatureStringPatterns.FREE_TEXT;
-import static com.mcorrigal.matchingEngine.matchers.Matchers.equalTo;
-import static com.mcorrigal.matchingEngine.utils.OrderBookUtils.orderBookSideFrom;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import java.util.List;
-
 import com.mcorrigal.matchingEngine.factories.OrderFactory;
 import com.mcorrigal.matchingEngine.features.SpecificationModels.SpecifiedOrder;
 import com.mcorrigal.matchingEngine.features.SpecificationModels.SpecifiedOrderBookLevel;
 import com.mcorrigal.matchingEngine.given.Environment;
 import com.mcorrigal.matchingEngine.order.BuyOrder;
-import com.mcorrigal.matchingEngine.order.OrderId;
 import com.mcorrigal.matchingEngine.order.SellOrder;
 import com.mcorrigal.matchingEngine.order.interfaces.Order;
 import com.mcorrigal.matchingEngine.order.interfaces.OrderList;
+import com.mcorrigal.matchingEngine.order.orderProperties.OrderId;
 import com.mcorrigal.matchingEngine.orderBook.OrderBookSnapshot;
 import com.mcorrigal.matchingEngine.orderBook.interfaces.OrderBookSide;
-
+import com.mcorrigal.matchingEngine.utils.OrderBookUtils;
 import cucumber.annotation.en.Given;
 import cucumber.annotation.en.Then;
 import cucumber.annotation.en.When;
+
+import java.util.List;
+
+import static com.mcorrigal.matchingEngine.TestConstants.*;
+import static com.mcorrigal.matchingEngine.features.FeatureStringPatterns.FREE_TEXT;
+import static com.mcorrigal.matchingEngine.utils.OrderBookUtils.orderBookSideFrom;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
+
 
 public class MatchingEngineStepDefinitions {
 	
@@ -41,14 +40,14 @@ public class MatchingEngineStepDefinitions {
 		environment = new Environment();
 		
 		for (SpecifiedOrderBookLevel bookLevel : orderBookLevels) {
-			BuyOrder buyOrder = bookLevel.getBidSideAsShortHandDescription().toOrder();
-			SellOrder sellOrder = bookLevel.getAskSideAsShortHandDescription().toOrder();
+			BuyOrder buyOrder = bookLevel.getBidSideAsShortHandDescription().manufactureNewOrder();
+			SellOrder sellOrder = bookLevel.getAskSideAsShortHandDescription().manufactureNewOrder();
 			if (buyOrder != null) sendOrder(buyOrder);
 			if (sellOrder != null) sendOrder(sellOrder);
 		}
 	}
-	
-	private void sendOrder(Order order) {
+
+    private void sendOrder(Order order) {
 		environment.getRealMatchingEngine().hasReceived(order);
 	}
 	
@@ -84,10 +83,23 @@ public class MatchingEngineStepDefinitions {
 		
 		for (int i = 0; i < specifiedOrderIds.size(); i++) {
 			OrderId expectedOrderId = OrderId.create(specifiedOrderIds.get(i).getId());
-			OrderId idOfOrderInOrderBook = ordersInOrderBookSide.get(i).getId();
-			assertThat(idOfOrderInOrderBook, is(equalTo(expectedOrderId)));
+			assertThat(ordersInOrderBookSide.get(i).hasId(expectedOrderId), is(true));
 		}
 	}
+
+    @Then("^the order is book is empty$")
+    public void the_order_is_book_is_empty() {
+        assertThat(environment.getRealMatchingEngine().orderBookIsEmpty(), is(true));
+    }
+
+    @Then("^the order book shows:$")
+    public void the_order_book_shows(List<SpecifiedOrderBookLevel> expectedOrderBookSnapshot) {
+        OrderBookSnapshot orderBookSnapshot = environment.snapshotOrderBookNow();
+        for (SpecifiedOrderBookLevel expectedBookLevel : expectedOrderBookSnapshot) {
+            assertTrue(OrderBookUtils.orderListContainsOrder(orderBookSnapshot.getBidSideSnapshot(), expectedBookLevel.getBidSideAsShortHandDescription()));
+            assertTrue(OrderBookUtils.orderListContainsOrder(orderBookSnapshot.getAskSideSnapshot(), expectedBookLevel.getAskSideAsShortHandDescription()));
+        }
+    }
 
 	private OrderList publishedOrderBookSideFor(OrderBookSide orderBookSide) throws Exception {
 		return orderBookSide.getOrderBookSideSnapshotFrom(lastPublishedOrderBookSnapshot());

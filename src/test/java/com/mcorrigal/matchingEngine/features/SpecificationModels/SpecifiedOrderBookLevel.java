@@ -1,8 +1,8 @@
 package com.mcorrigal.matchingEngine.features.SpecificationModels;
 
-import com.mcorrigal.matchingEngine.features.BuyShortHandOrder;
-import com.mcorrigal.matchingEngine.features.SellShortHandOrder;
-import com.mcorrigal.matchingEngine.features.ShortHandOrder;
+import com.mcorrigal.matchingEngine.order.BuyShortHandOrder;
+import com.mcorrigal.matchingEngine.order.SellShortHandOrder;
+import com.mcorrigal.matchingEngine.order.ShortHandOrder;
 
 
 public class SpecifiedOrderBookLevel {

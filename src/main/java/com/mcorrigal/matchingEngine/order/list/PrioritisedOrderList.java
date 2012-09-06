@@ -1,10 +1,10 @@
 package com.mcorrigal.matchingEngine.order.list;
 
-import java.util.Collections;
-
 import com.mcorrigal.matchingEngine.order.interfaces.Order;
 import com.mcorrigal.matchingEngine.order.interfaces.OrderList;
 import com.mcorrigal.matchingEngine.orderBook.interfaces.OrderComparator;
+
+import java.util.Collections;
 
 public class PrioritisedOrderList extends SimpleOrderList implements OrderList {
 	
@@ -19,8 +19,8 @@ public class PrioritisedOrderList extends SimpleOrderList implements OrderList {
 		orders.add(order);
 		prioritiseOrders();
 	}
-	
-	private void prioritiseOrders() {
+
+    private void prioritiseOrders() {
 		Collections.sort(orders, orderComparator);
 	}
 	

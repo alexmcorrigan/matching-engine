@@ -25,4 +25,8 @@ public class Environment {
 	private void initialiseComponents() {
 		realMatchingEngine.addOrderBookSnapshotSubscriber(orderBookSnapshotListener);
 	}
+
+    public OrderBookSnapshot snapshotOrderBookNow() {
+        return realMatchingEngine.snapShotOrderBook();
+    }
 }

@@ -1,8 +1,9 @@
-package com.mcorrigal.matchingEngine.features;
+package com.mcorrigal.matchingEngine.order;
 
-import com.mcorrigal.matchingEngine.order.Price;
-import com.mcorrigal.matchingEngine.order.Quantity;
 import com.mcorrigal.matchingEngine.order.interfaces.Order;
+import com.mcorrigal.matchingEngine.order.orderProperties.OrderId;
+import com.mcorrigal.matchingEngine.order.orderProperties.Price;
+import com.mcorrigal.matchingEngine.order.orderProperties.Quantity;
 
 public abstract class ShortHandOrder {
 
@@ -20,7 +21,7 @@ public abstract class ShortHandOrder {
 	public static SellShortHandOrder createSell(String shortHandOrderDescription) {
 		return new SellShortHandOrder(shortHandOrderDescription);
 	}
-	
+
 	protected ShortHandOrder(String shortHandOrderDescription) {
 		this.shortHandOrderDescription = shortHandOrderDescription;
 		extractAndSetPrice();
@@ -39,16 +40,20 @@ public abstract class ShortHandOrder {
 		return shortHandOrderDescription.split("@")[fieldIndex].trim();
 	}
 
-	public Price getPrice() {
-		return price;
-	}
+    @Override
+    public boolean equals(Object o) {
+        try {
+            ShortHandOrder otherShortHandOrder = (ShortHandOrder) o;
+            return price == otherShortHandOrder.price && quantity == otherShortHandOrder.quantity;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
-	public Quantity getQuantity() {
-		return quantity;
-	}
-	
-	public abstract Order toOrder();
-	
-	
-	
+    public abstract Order manufactureNewOrder();
+
+    protected OrderId createNewOrderIdFromTime() {
+        return OrderId.create(String.valueOf(System.currentTimeMillis()));
+    }
+
 }

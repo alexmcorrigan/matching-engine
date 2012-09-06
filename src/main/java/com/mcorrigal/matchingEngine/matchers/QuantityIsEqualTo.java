@@ -7,24 +7,24 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import com.mcorrigal.matchingEngine.order.OrderId;
+import com.mcorrigal.matchingEngine.order.orderProperties.Quantity;
 
-public class OrderIdIsEqualTo extends TypeSafeDiagnosingMatcher<OrderId> {
+public class QuantityIsEqualTo extends TypeSafeDiagnosingMatcher<Quantity> {
 	
-	private OrderId expectedOrderId;
-	private Matcher<String> value;
+	private Quantity expectedQuantity;
+	private Matcher<Integer> value;
 	
-	public OrderIdIsEqualTo(OrderId expectedOrderId) {
-		this.expectedOrderId = expectedOrderId;
-		value = is(equalTo(expectedOrderId.getValue()));
+	public QuantityIsEqualTo(Quantity expectedQuantity) {
+		this.expectedQuantity = expectedQuantity;
+		value = is(equalTo(expectedQuantity.getValue()));
 	}
 	
 	@Override
-	protected boolean matchesSafely(OrderId orderId, Description mismatchDescription) {
+	protected boolean matchesSafely(Quantity quantity, Description mismatchDescription) {
 		boolean matches = true;
 		
-		if (!value.matches(orderId.getValue())) {
-			reportMismatch("value", value, orderId.getValue(), mismatchDescription, matches);
+		if (!value.matches(quantity.getValue())) {
+			reportMismatch("value", value, quantity.getValue(), mismatchDescription, matches);
 			matches = false;
 		}
 		
@@ -42,7 +42,7 @@ public class OrderIdIsEqualTo extends TypeSafeDiagnosingMatcher<OrderId> {
 	@Override
 	public void describeTo(Description description) {
 		description.appendText("{value is ")
-		.appendValue(expectedOrderId.getValue())
+		.appendValue(expectedQuantity.getValue())
 		.appendText("}");
 	}
 

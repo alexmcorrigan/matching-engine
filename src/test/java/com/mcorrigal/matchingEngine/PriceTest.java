@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 import org.junit.Test;
 
-import com.mcorrigal.matchingEngine.order.Price;
+import com.mcorrigal.matchingEngine.order.orderProperties.Price;
 
 public class PriceTest {
 	

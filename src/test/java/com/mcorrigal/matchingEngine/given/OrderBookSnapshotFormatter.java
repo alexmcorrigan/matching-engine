@@ -33,7 +33,7 @@ public class OrderBookSnapshotFormatter {
 	}
 	
 	private String buildOrderString(Order order) {
-		return  order.getQuantity().getValue() + "@" + order.getPrice().getValue();
+		return  order.toShortHandNotation();
 	}
 
 }
