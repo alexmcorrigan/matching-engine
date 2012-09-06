@@ -33,7 +33,7 @@ public class OrderBookSnapshotFormatter {
 	}
 	
 	private String buildOrderString(Order order) {
-		return  order.toShortHandNotation();
+		return  order.toShortHandNotationString();
 	}
 
 }

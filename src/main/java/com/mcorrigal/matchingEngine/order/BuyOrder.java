@@ -31,8 +31,4 @@ public class BuyOrder extends Order {
         orderBook.removeBuyOrder(this);
     }
 
-    @Override
-    public ShortHandOrder toShortHandOrder() {
-        return new BuyShortHandOrder(toShortHandNotation());
-    }
 }

@@ -30,9 +30,4 @@ public class SellOrder extends Order {
         orderBook.removeSellOrder(this);
     }
 
-    @Override
-    public ShortHandOrder toShortHandOrder() {
-        return new SellShortHandOrder(toShortHandNotation());
-    }
-
 }

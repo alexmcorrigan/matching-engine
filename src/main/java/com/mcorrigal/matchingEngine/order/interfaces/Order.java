@@ -1,17 +1,10 @@
 package com.mcorrigal.matchingEngine.order.interfaces;
 
-import com.mcorrigal.matchingEngine.order.ShortHandOrder;
 import com.mcorrigal.matchingEngine.order.orderProperties.*;
 import com.mcorrigal.matchingEngine.orderBook.interfaces.OrderBook;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeDiagnosingMatcher;
-
-import static com.mcorrigal.matchingEngine.matchers.Matchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
 
 
-public abstract class Order extends TypeSafeDiagnosingMatcher<Order> {
+public abstract class Order {
 
     private OrderId id;
 	private OrderType type;
@@ -19,23 +12,12 @@ public abstract class Order extends TypeSafeDiagnosingMatcher<Order> {
 	protected Price price;
 	protected Quantity quantity;
 
-    private Matcher<OrderId> idMatcher;
-    private Matcher<OrderSide> sideMatcher;
-    private Matcher<OrderType> typeMatcher;
-    private Matcher<Price> priceMatcher;
-    private Matcher<Quantity> quantityMatcher;
-	
-	public Order(OrderId id, OrderType type, OrderSide side, Price price, Quantity quantity) {
+	protected Order(OrderId id, OrderType type, OrderSide side, Price price, Quantity quantity) {
 		this.id = id;
 		this.type = type;
 		this.side = side;
 		this.price = price;
 		this.quantity = quantity;
-        idMatcher = is(equalTo(id));
-        sideMatcher = is(side);
-        typeMatcher = is(type);
-        priceMatcher = is(equalTo(price));
-        quantityMatcher = is(equalTo(quantity));
 	}
 
     public boolean isSameShape(Quantity quantity, Price price) {
@@ -54,7 +36,7 @@ public abstract class Order extends TypeSafeDiagnosingMatcher<Order> {
 	public String toString() {
 		StringBuilder orderString = new StringBuilder();
 		orderString.append("{");
-		orderString.append(id.getValue());
+		orderString.append(id.toString());
 		orderString.append(" ");
 		orderString.append(type.toString());
 		orderString.append(" ");
@@ -70,68 +52,42 @@ public abstract class Order extends TypeSafeDiagnosingMatcher<Order> {
 	public abstract void work(OrderBook orderBook);
     public abstract Order findMatch(OrderBook orderBook);
     public abstract void remove(OrderBook orderBook);
-    public abstract ShortHandOrder toShortHandOrder();
 
     public boolean hasId(OrderId id) {
         return this.id.equals(id);
     }
 
-    public String toShortHandNotation() {
+    public boolean isSameSizeAs(Order order) {
+        return quantity.equals(order.quantity);
+    }
+
+    public boolean isSamePriceAs(Order order) {
+        return price.equals(order.price);
+    }
+
+    public boolean isSameTypeAs(Order order) {
+        return type.equals(order.type);
+    }
+
+    public boolean isSameSideAs(Order order) {
+        return side.equals(order.side);
+    }
+
+    public String toShortHandNotationString() {
         return String.format("%s@%s", quantity.toString(), price.toString());
     }
 
     @Override
-    protected boolean matchesSafely(Order order, Description mismatchDescription) {
-        boolean matches = true;
-
-        if (!idMatcher.matches(order.id)) {
-            reportMismatch("id", idMatcher, order.id, mismatchDescription, matches);
-            matches = false;
+    public boolean equals(Object o) {
+        boolean equal = false;
+        if (o instanceof Order) {
+            Order order = (Order) o;
+            equal = order.hasId(id)
+                    && order.isSameTypeAs(order)
+                    && order.isSameSideAs(order)
+                    && order.isSameSizeAs(order)
+                    && order.isSamePriceAs(order);
         }
-
-        if (!sideMatcher.matches(order.side)) {
-            reportMismatch("side", sideMatcher, order.side, mismatchDescription, matches);
-            matches = false;
-        }
-
-        if (!typeMatcher.matches(order.type)) {
-            reportMismatch("type", typeMatcher, order.type, mismatchDescription, matches);
-            matches = false;
-        }
-
-        if (!priceMatcher.matches(order.price)) {
-            reportMismatch("price", priceMatcher, order.price, mismatchDescription, matches);
-            matches = false;
-        }
-
-        if (!quantityMatcher.matches(order.quantity)) {
-            reportMismatch("quantity", quantityMatcher, order.quantity, mismatchDescription, matches);
-            matches = false;
-        }
-
-        return matches;
-    }
-
-    private void reportMismatch(String name, Matcher<?> matcher, Object item, Description mismatchDescription, boolean isFirstMismatch) {
-        if (!isFirstMismatch) {
-            mismatchDescription.appendText(", ");
-        }
-        mismatchDescription.appendText(name + " ");
-        matcher.describeMismatch(item, mismatchDescription);
-    }
-
-    @Override
-    public void describeTo(Description description) {
-        description.appendText("{id is ")
-                .appendValue(id.getValue())
-                .appendText(", side is ")
-                .appendValue(side.toString())
-                .appendText(", type is ")
-                .appendValue(type.toString())
-                .appendText(", price is ")
-                .appendValue(price.toString())
-                .appendText(", quantity is ")
-                .appendValue(quantity.toString())
-                .appendText("}");
+        return equal;
     }
 }

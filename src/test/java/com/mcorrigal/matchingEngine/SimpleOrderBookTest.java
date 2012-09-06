@@ -16,7 +16,6 @@ import org.junit.Test;
 
 import static com.mcorrigal.matchingEngine.TestConstants.DUMMY_LIMIT_BUY_ORDER;
 import static com.mcorrigal.matchingEngine.TestConstants.DUMMY_LIMIT_SELL_ORDER;
-import static com.mcorrigal.matchingEngine.matchers.Matchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -60,7 +59,7 @@ public class SimpleOrderBookTest {
 		orderBook.newBuyOrder(buyB);
 		assertThat("buy order removed from orderBook", orderBook.removeBuyOrder(buyA), is(true));
 		assertThat("number of bids in order book", bids.size(), is(1));
-		assertThat("remaining order in order book", bids.get(0), is(equalTo(buyB)));
+		assertThat("remaining order in order book", bids.get(0).equals(buyB), is(true));
 	}
 	
 	@Test
@@ -71,7 +70,7 @@ public class SimpleOrderBookTest {
 		orderBook.newSellOrder(sellB);
 		assertThat("sell order removed from orderBook", orderBook.removeSellOrder(sellA), is(true));
 		assertThat("number of asks in order book", asks.size(), is(1));
-		assertThat("remaining order in order book", asks.get(0), is(equalTo(sellB)));
+        assertThat("remaining order in order book", asks.get(0).equals(sellB), is(true));
 	}
 	
 	@Test
@@ -90,7 +89,7 @@ public class SimpleOrderBookTest {
         SellOrder sellOrder = OrderFactory.newLimitSell("SELL", "95", "100");
         orderBook.newSellOrder(sellOrder);
         Order match = orderBook.findMatchForBuyOrder(Quantity.create("100"), Price.create("95"));
-        assertThat(match, is(equalTo(sellOrder)));
+        assertThat(match.equals(sellOrder), is(true));
     }
 
     @Test
@@ -98,7 +97,7 @@ public class SimpleOrderBookTest {
         BuyOrder buyOrder = OrderFactory.newLimitBuy("BUY", "95", "100");
         orderBook.newBuyOrder(buyOrder);
         Order match = orderBook.findMatchForSellOrder(Quantity.create("100"), Price.create("95"));
-        assertThat(match, is(equalTo(buyOrder)));
+        assertThat(match.equals(buyOrder), is(true));
     }
 
 }

@@ -16,7 +16,7 @@ public class OrderBookUtils {
     public static boolean orderListContainsOrder(OrderList orders, ShortHandOrder shortHandOrder) {
         boolean containsOrder = false;
         for (Order order : orders.getAll()) {
-            containsOrder = order.toShortHandNotation().equals(shortHandOrder);
+            containsOrder = order.toShortHandNotationString().equals(shortHandOrder.toString());
         }
         return containsOrder;
     }

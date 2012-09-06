@@ -1,14 +1,12 @@
 package com.mcorrigal.matchingEngine;
 
-import static com.mcorrigal.matchingEngine.matchers.Matchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import com.mcorrigal.matchingEngine.order.orderProperties.Price;
+import org.junit.Test;
 
 import java.math.BigDecimal;
 
-import org.junit.Test;
-
-import com.mcorrigal.matchingEngine.order.orderProperties.Price;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class PriceTest {
 	
@@ -19,7 +17,7 @@ public class PriceTest {
 	public void newPriceFromStringRepresentation() {
 		Price priceFromString = Price.create("100.89");
 		Price priceFromDecimal = new Price(new BigDecimal("100.89"));
-		assertThat(priceFromString, is(equalTo(priceFromDecimal)));
+		assertThat(priceFromString.equals(priceFromDecimal), is(true));
 	}
 	
 	@Test

@@ -13,14 +13,12 @@ import com.mcorrigal.matchingEngine.orderBook.interfaces.OrderBook;
 
 public class RealMatchingEngine {
 
-	private OrderList bids;
-	private OrderList asks;
 	private OrderBook orderBook;
 	private MatchingEngine matchingEngine;
 	
 	public RealMatchingEngine() {
-		this.bids = new PrioritisedOrderList(new BidOrderComparator());
-		this.asks = new PrioritisedOrderList(new AskOrderComparator());
+		OrderList bids = new PrioritisedOrderList(new BidOrderComparator());
+		OrderList asks = new PrioritisedOrderList(new AskOrderComparator());
 		this.orderBook = OrderBookFactory.newInstance(bids, asks);
 		matchingEngine = new MatchingEngine(orderBook);
 	}
